@@ -34,6 +34,7 @@ export const sp = new SuperClient({ url: "http://localhost:3000" });
 ...
 
 // App.tsx
+import { sp } from "./client";
 import EicrudDataProvider from "ra-eicrud-dataprovider";
 
 function App() {
