@@ -20,3 +20,35 @@ You can install the library via npm:
 ```bash
 npm install ra-eicrud-dataprovider
 ```
+
+## Usage
+
+To use the library, you need to create an instance of the `EiCRUDDataProvider` class and pass it to the `DataProvider` component of React Admin. Here's an example:
+
+```jsx
+// client.ts
+import { SuperClient } from "../../eicrud_exports/super_client";
+
+export const sp = new SuperClient({ url: "http://localhost:3000" });
+
+...
+
+// App.tsx
+import EicrudDataProvider from "ra-eicrud-dataprovider";
+
+function App() {
+  const provider = EicrudDataProvider(sp);
+
+  return (
+    <Admin dataProvider={provider}>
+      <Resource
+        name="blog"
+        list={<BlogList />}
+        create={<BlogCreate />}
+        show={<BlogShow />}
+        edit={<BlogEdit />}
+      />
+    </Admin>
+  );
+}
+```
