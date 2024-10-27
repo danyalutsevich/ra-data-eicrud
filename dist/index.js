@@ -55,17 +55,21 @@ exports.default = (sp) => ({
     }),
     update: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
         const updatedFileds = underscore_1.default.pick(params.data, (value, key) => !underscore_1.default.isEqual(value, params.previousData[key]));
-        const res = yield sp[resource].patch({ id: params.id }, Object.assign({}, updatedFileds));
+        const res = yield sp[resource].patch({ id: params.id }, Object.assign({}, updatedFileds), {
+            returnUpdatedEntities: true,
+        });
         console.log("update", { resource, params, res, updatedFileds });
         return {
-            data: res,
+            data: res.updated,
         };
     }),
     updateMany: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield sp[resource].patch({ id: { $in: params.ids } }, Object.assign({}, params.data));
+        const res = yield sp[resource].patch({ id: { $in: params.ids } }, Object.assign({}, params.data), {
+            returnUpdatedEntities: true,
+        });
         console.log("updateMany", { resource, params, res });
         return {
-            data: res.data,
+            data: res.updated,
         };
     }),
     create: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
@@ -78,6 +82,8 @@ exports.default = (sp) => ({
     delete: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield sp[resource].deleteOne({
             id: params.id,
+        }, {
+            returnUpdatedEntities: true,
         });
         console.log("delete", { resource, params, res });
         return {
@@ -87,10 +93,10 @@ exports.default = (sp) => ({
     deleteMany: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield sp[resource].delete({
             id: { $in: params.ids },
-        });
+        }, { returnUpdatedEntities: true });
         console.log("deleteMany", { resource, params, res });
         return {
-            data: [res],
+            data: res.deleted,
         };
     }),
 });

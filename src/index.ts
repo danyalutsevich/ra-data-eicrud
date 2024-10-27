@@ -21,7 +21,7 @@ import {
   UpdateResult,
 } from "react-admin";
 import _ from "underscore";
-// import { SuperClient } from "../../erika/eicrud_exports/super_client";
+// import { SuperClient } from "../../../test/js_ts/erika/erika/eicrud_exports/super_client";
 //
 // export const sp = new SuperClient({ url: "http://localhost:3000" });
 
@@ -108,12 +108,15 @@ export default (sp: SuperClient): DataProvider => ({
       {
         ...updatedFileds,
       },
+      {
+        returnUpdatedEntities: true,
+      },
     );
 
     console.log("update", { resource, params, res, updatedFileds });
 
     return {
-      data: res,
+      data: res.updated,
     };
   },
 
@@ -126,11 +129,14 @@ export default (sp: SuperClient): DataProvider => ({
       {
         ...params.data,
       },
+      {
+        returnUpdatedEntities: true,
+      },
     );
 
     console.log("updateMany", { resource, params, res });
     return {
-      data: res.data,
+      data: res.updated,
     };
   },
 
@@ -152,9 +158,14 @@ export default (sp: SuperClient): DataProvider => ({
     resource: string,
     params: DeleteParams & QueryFunctionContext,
   ): Promise<DeleteResult> => {
-    const res = await sp[resource as keyof SuperClient].deleteOne({
-      id: params.id,
-    });
+    const res = await sp[resource as keyof SuperClient].deleteOne(
+      {
+        id: params.id,
+      },
+      {
+        returnUpdatedEntities: true,
+      },
+    );
 
     console.log("delete", { resource, params, res });
     return {
@@ -166,13 +177,16 @@ export default (sp: SuperClient): DataProvider => ({
     resource: string,
     params: DeleteManyParams & QueryFunctionContext,
   ): Promise<DeleteManyResult> => {
-    const res = await sp[resource as keyof SuperClient].delete({
-      id: { $in: params.ids },
-    });
+    const res = await sp[resource as keyof SuperClient].delete(
+      {
+        id: { $in: params.ids },
+      },
+      { returnUpdatedEntities: true },
+    );
 
     console.log("deleteMany", { resource, params, res });
     return {
-      data: [res],
+      data: res.deleted,
     };
   },
 });
