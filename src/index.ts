@@ -21,8 +21,8 @@ import {
   UpdateResult,
 } from "react-admin";
 import _ from "underscore";
-// import { SuperClient } from "../../../test/js_ts/erika/erika/eicrud_exports/super_client";
-//
+// import { SuperClient } from "../../../sandbox/js_ts/erika/erika/eicrud_exports/super_client";
+
 // export const sp = new SuperClient({ url: "http://localhost:3000" });
 
 type SuperClient = any;
@@ -116,7 +116,7 @@ export default (sp: SuperClient): DataProvider => ({
     console.log("update", { resource, params, res, updatedFileds });
 
     return {
-      data: res.updated,
+      data: res?.updated ? res.updated[0] : {},
     };
   },
 
@@ -169,7 +169,7 @@ export default (sp: SuperClient): DataProvider => ({
 
     console.log("delete", { resource, params, res });
     return {
-      data: res,
+      data: res.deleted ? res.deleted[0] : {},
     };
   },
 

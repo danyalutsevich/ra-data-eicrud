@@ -60,7 +60,7 @@ exports.default = (sp) => ({
         });
         console.log("update", { resource, params, res, updatedFileds });
         return {
-            data: res.updated,
+            data: (res === null || res === void 0 ? void 0 : res.updated) ? res.updated[0] : {},
         };
     }),
     updateMany: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
@@ -87,7 +87,7 @@ exports.default = (sp) => ({
         });
         console.log("delete", { resource, params, res });
         return {
-            data: res,
+            data: res.deleted ? res.deleted[0] : {},
         };
     }),
     deleteMany: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
