@@ -1,6 +1,6 @@
-# ra-eicrud-dataprovider
+# ra-data-eicrud
 
-`ra-eicrud-dataprovider` is a **data provider** for integrating the **EiCRUD backend** with the **React Admin frontend**. This library leverages EiCRUD’s powerful backend services and uses the **Super Client** to handle API requests seamlessly.
+`ra-data-eicrud` is a **data provider** for integrating the **EiCRUD backend** with the **React Admin frontend**. This library leverages EiCRUD’s powerful backend services and uses the **Super Client** to handle API requests seamlessly.
 
 ---
 
