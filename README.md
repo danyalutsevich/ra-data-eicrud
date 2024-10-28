@@ -1,6 +1,7 @@
 # ra-eicrud-dataprovider
 
-`ra-eicrud-dataprovider` is a **data provider** for integrating the **<a href="https://eicrud.com">EiCRUD backend</a>** with the **<a href="https://marmelab.com/react-admin/">React Admin frontend<a/>**. This library leverages EiCRUD’s powerful backend services and uses the **Super Client** to handle API requests seamlessly.
+`ra-eicrud-dataprovider` is a **data provider** for integrating the **<a href="https://eicrud.com">EiCRUD backend</a>** (<a href="https://www.npmjs.com/package/@eicrud/core">npm<a/>) with the **<a href="https://marmelab.com/react-admin/">React Admin frontend<a/>** (<a href="https://www.npmjs.com/package/react-admin">npm<a/>). 
+This library leverages EiCRUD’s powerful backend services and uses the **Super Client** to handle API requests seamlessly.
 
 ---
 
