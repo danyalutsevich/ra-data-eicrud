@@ -134,7 +134,7 @@ export default (sp: SuperClient): DataProvider => ({
       },
     );
 
-    console.log("updateMany", { resource, params, res });
+    console.log("updateMany", { resource, params, res: res });
     return {
       data: res.updated,
     };
@@ -181,10 +181,11 @@ export default (sp: SuperClient): DataProvider => ({
       {
         id: { $in: params.ids },
       },
-      { returnUpdatedEntities: true },
+      {
+        returnUpdatedEntities: true,
+      },
     );
 
-    console.log("deleteMany", { resource, params, res });
     return {
       data: res.deleted,
     };

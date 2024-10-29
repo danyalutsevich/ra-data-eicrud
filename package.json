@@ -1,6 +1,7 @@
 {
   "name": "ra-data-eicrud",
-  "version": "1.0.9",
+  "description": "A data provider for react-admin that uses the EICrud API",
+  "version": "1.1.2",
   "keywords": [
     "eicrud",
     "react-admin",
@@ -17,7 +18,7 @@
     "build": "tsc",
     "prepare": "npm run build"
   },
-  "author": "",
+  "author": "Dan Lutsevich <luchevich31@gmail.com> (https://github.com/danyalutsevich)",
   "license": "ISC",
   "dependencies": {
     "@types/underscore": "^1.13.0",

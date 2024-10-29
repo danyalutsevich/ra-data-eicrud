@@ -67,7 +67,7 @@ exports.default = (sp) => ({
         const res = yield sp[resource].patch({ id: { $in: params.ids } }, Object.assign({}, params.data), {
             returnUpdatedEntities: true,
         });
-        console.log("updateMany", { resource, params, res });
+        console.log("updateMany", { resource, params, res: res });
         return {
             data: res.updated,
         };
@@ -93,8 +93,9 @@ exports.default = (sp) => ({
     deleteMany: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield sp[resource].delete({
             id: { $in: params.ids },
-        }, { returnUpdatedEntities: true });
-        console.log("deleteMany", { resource, params, res });
+        }, {
+            returnUpdatedEntities: true,
+        });
         return {
             data: res.deleted,
         };
