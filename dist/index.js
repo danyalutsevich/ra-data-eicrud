@@ -16,7 +16,6 @@ const underscore_1 = __importDefault(require("underscore"));
 exports.default = (sp) => ({
     getList: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b, _c;
-        console.log("getList", { resource, params });
         const res = yield sp[resource].find(Object.assign({}, params.filter), {
             limit: (_a = params.pagination) === null || _a === void 0 ? void 0 : _a.perPage,
             offset: ((((_b = params === null || params === void 0 ? void 0 : params.pagination) === null || _b === void 0 ? void 0 : _b.page) || 0) - 1) *
@@ -31,7 +30,6 @@ exports.default = (sp) => ({
         const res = yield sp[resource].findOne({
             id: params.id,
         });
-        console.log("getOne", { resource, params, res });
         return {
             data: res,
         };
@@ -40,14 +38,12 @@ exports.default = (sp) => ({
         const res = yield sp[resource].find({
             id: { $in: params.ids },
         });
-        console.log("getMany", { resource, params, res });
         return {
             data: res.data,
         };
     }),
     getManyReference: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield sp[resource].find(Object.assign({}, params.filter));
-        console.log("getManyReference", { resource, params, res });
         return {
             data: res.data,
             total: res.total,
@@ -58,23 +54,18 @@ exports.default = (sp) => ({
         const res = yield sp[resource].patch({ id: params.id }, Object.assign({}, updatedFileds), {
             returnUpdatedEntities: true,
         });
-        console.log("update", { resource, params, res, updatedFileds });
         return {
             data: (res === null || res === void 0 ? void 0 : res.updated) ? res.updated[0] : {},
         };
     }),
     updateMany: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield sp[resource].patch({ id: { $in: params.ids } }, Object.assign({}, params.data), {
-            returnUpdatedEntities: true,
-        });
-        console.log("updateMany", { resource, params, res: res });
+        yield sp[resource].patchIn(params.ids, Object.assign({}, params.data));
         return {
-            data: res.updated,
+            data: params.ids,
         };
     }),
     create: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
         const res = yield sp[resource].create(Object.assign({}, params.data));
-        console.log("create", { resource, params, res });
         return {
             data: res,
         };
@@ -85,71 +76,15 @@ exports.default = (sp) => ({
         }, {
             returnUpdatedEntities: true,
         });
-        console.log("delete", { resource, params, res });
         return {
             data: res.deleted ? res.deleted[0] : {},
         };
     }),
     deleteMany: (resource, params) => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield sp[resource].delete({
-            id: { $in: params.ids },
-        }, {
-            returnUpdatedEntities: true,
-        });
+        yield sp[resource].deleteIn(params.ids);
         return {
-            data: res.deleted,
+            data: params.ids,
         };
     }),
 });
-// getList: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetListParams & QueryFunctionContext
-// ) => Promise<GetListResult<RecordType>>;
-//
-// getOne: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetOneParams<RecordType> & QueryFunctionContext
-// ) => Promise<GetOneResult<RecordType>>;
-//
-// getMany: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetManyParams<RecordType> & QueryFunctionContext
-// ) => Promise<GetManyResult<RecordType>>;
-//
-// getManyReference: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetManyReferenceParams & QueryFunctionContext
-// ) => Promise<GetManyReferenceResult<RecordType>>;
-//
-// update: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: UpdateParams
-// ) => Promise<UpdateResult<RecordType>>;
-//
-// updateMany: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: UpdateManyParams
-// ) => Promise<UpdateManyResult<RecordType>>;
-//
-// create: <
-//   RecordType extends Omit<RaRecord, 'id'> = any,
-//   ResultRecordType extends RaRecord = RecordType & { id: Identifier },
-// >(
-//   resource: ResourceType,
-//   params: CreateParams
-// ) => Promise<CreateResult<ResultRecordType>>;
-//
-// delete: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: DeleteParams<RecordType>
-// ) => Promise<DeleteResult<RecordType>>;
-//
-// deleteMany: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: DeleteManyParams<RecordType>
-// ) => Promise<DeleteManyResult<RecordType>>;
-//
-// [key: string]: any;
-// supportAbortSignal?: boolean;
-//
 //# sourceMappingURL=index.js.map

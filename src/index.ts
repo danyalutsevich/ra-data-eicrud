@@ -32,8 +32,6 @@ export default (sp: SuperClient): DataProvider => ({
     resource: string,
     params: GetListParams & QueryFunctionContext,
   ): Promise<GetListResult> => {
-    console.log("getList", { resource, params });
-
     const res = await sp[resource as keyof SuperClient].find(
       {
         ...params.filter,
@@ -60,7 +58,6 @@ export default (sp: SuperClient): DataProvider => ({
       id: params.id,
     });
 
-    console.log("getOne", { resource, params, res });
     return {
       data: res,
     };
@@ -74,7 +71,6 @@ export default (sp: SuperClient): DataProvider => ({
       id: { $in: params.ids },
     });
 
-    console.log("getMany", { resource, params, res });
     return {
       data: res.data,
     };
@@ -88,7 +84,6 @@ export default (sp: SuperClient): DataProvider => ({
       ...params.filter,
     });
 
-    console.log("getManyReference", { resource, params, res });
     return {
       data: res.data,
       total: res.total,
@@ -113,8 +108,6 @@ export default (sp: SuperClient): DataProvider => ({
       },
     );
 
-    console.log("update", { resource, params, res, updatedFileds });
-
     return {
       data: res?.updated ? res.updated[0] : {},
     };
@@ -124,19 +117,12 @@ export default (sp: SuperClient): DataProvider => ({
     resource: string,
     params: UpdateManyParams & QueryFunctionContext,
   ): Promise<UpdateManyResult> => {
-    const res = await sp[resource as keyof SuperClient].patch(
-      { id: { $in: params.ids } },
-      {
-        ...params.data,
-      },
-      {
-        returnUpdatedEntities: true,
-      },
-    );
+    await sp[resource as keyof SuperClient].patchIn(params.ids, {
+      ...params.data,
+    });
 
-    console.log("updateMany", { resource, params, res: res });
     return {
-      data: res.updated,
+      data: params.ids,
     };
   },
 
@@ -148,7 +134,6 @@ export default (sp: SuperClient): DataProvider => ({
       ...params.data,
     });
 
-    console.log("create", { resource, params, res });
     return {
       data: res,
     };
@@ -167,7 +152,6 @@ export default (sp: SuperClient): DataProvider => ({
       },
     );
 
-    console.log("delete", { resource, params, res });
     return {
       data: res.deleted ? res.deleted[0] : {},
     };
@@ -177,69 +161,10 @@ export default (sp: SuperClient): DataProvider => ({
     resource: string,
     params: DeleteManyParams & QueryFunctionContext,
   ): Promise<DeleteManyResult> => {
-    const res = await sp[resource as keyof SuperClient].delete(
-      {
-        id: { $in: params.ids },
-      },
-      {
-        returnUpdatedEntities: true,
-      },
-    );
+    await sp[resource as keyof SuperClient].deleteIn(params.ids);
 
     return {
-      data: res.deleted,
+      data: params.ids,
     };
   },
 });
-
-// getList: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetListParams & QueryFunctionContext
-// ) => Promise<GetListResult<RecordType>>;
-//
-// getOne: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetOneParams<RecordType> & QueryFunctionContext
-// ) => Promise<GetOneResult<RecordType>>;
-//
-// getMany: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetManyParams<RecordType> & QueryFunctionContext
-// ) => Promise<GetManyResult<RecordType>>;
-//
-// getManyReference: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: GetManyReferenceParams & QueryFunctionContext
-// ) => Promise<GetManyReferenceResult<RecordType>>;
-//
-// update: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: UpdateParams
-// ) => Promise<UpdateResult<RecordType>>;
-//
-// updateMany: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: UpdateManyParams
-// ) => Promise<UpdateManyResult<RecordType>>;
-//
-// create: <
-//   RecordType extends Omit<RaRecord, 'id'> = any,
-//   ResultRecordType extends RaRecord = RecordType & { id: Identifier },
-// >(
-//   resource: ResourceType,
-//   params: CreateParams
-// ) => Promise<CreateResult<ResultRecordType>>;
-//
-// delete: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: DeleteParams<RecordType>
-// ) => Promise<DeleteResult<RecordType>>;
-//
-// deleteMany: <RecordType extends RaRecord = any>(
-//   resource: ResourceType,
-//   params: DeleteManyParams<RecordType>
-// ) => Promise<DeleteManyResult<RecordType>>;
-//
-// [key: string]: any;
-// supportAbortSignal?: boolean;
-//
